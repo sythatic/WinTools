@@ -3,12 +3,16 @@
 <p align="center">A small collection of script apps for system QOL and maintenance.</p>
 </br>
 
-### winclricn
+## sysinfo
+
+- [x] Allows the user to input the system's manufacturer, model, and support URL
+
+## clrico
 
 - [x] Resets and clears the Windows icon and thumbnail cache
 - [x] Designed for use on Windows 10 or 11 (Not tested on earlier versions of Windows, but may still be effective.)
 
-### winpatch
+## winpatch
 
 - [x] Disables search box suggestions in the Windows Explorer.
 - [x] Disables dynamic search box in the Windows search settings.

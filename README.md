@@ -1,6 +1,6 @@
 <h1 align="center">WinTools</h1>
 
-<p align="center">A small collection of script apps for system QOL and maintenance.</p>
+<p align="center">An all-in-one collection of script apps for system maintenance and setup.</p>
 </br>
 
 ## sysinfo

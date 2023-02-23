@@ -1,7 +1,7 @@
 @echo off
 :top
 echo:
-echo   [104m WinTools v0.0.1 [0m
+echo   [104m WinTools v0.1.0 [0m
 echo   [90m By Sythatic [0m
 echo:
 

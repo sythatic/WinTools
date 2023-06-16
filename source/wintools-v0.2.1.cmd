@@ -1,8 +1,21 @@
 @echo off
+
+REM Check if the user is an administrator
+net session >nul 2>&1
+if %errorLevel% equ 0 (
+    goto top
+) else (
+    echo:
+    echo [93mThis script must be run as Administrator.[0m
+    echo:
+    pause
+    exit
+)
+
 :top
 echo:
 echo   [104m WinTools [0m
-echo   [90mv0.2.0 [0m
+echo   [90mv0.2.1 [0m
 :prompt
 echo:
 echo   [97mExit [93m[X] [0m

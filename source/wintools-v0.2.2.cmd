@@ -6,7 +6,7 @@ if %errorLevel% equ 0 (
     goto top
 ) else (
     echo:
-    echo [93mThis script must be run as Administrator.[0m
+    echo [43m This script must be run as Administrator [0m
     echo:
     pause
     exit
@@ -15,16 +15,19 @@ if %errorLevel% equ 0 (
 :top
 echo:
 echo   [104m WinTools [0m
-echo   [90mv0.2.1 [0m
-:prompt
+echo   [90mv0.2.2 [0m
 echo:
+:prompt
+set "modify="
 echo   [97mExit [93m[X] [0m
 echo:
 echo   [7m Applet Commands [0m
 :help
 echo:
 echo   [97mClear Icon Cache                            [93m[clrico]
+echo   [97mContext Menu Editor                         [91m[cmedit]
 echo   [97mDeployment Image Servicing and Management   [93m[dism]
+echo   [97mSuspend File Explorer                       [93m[killfe]
 echo   [97mChange Program Files Location               [91m[pgrmdir]
 echo   [97mGet OEM Product Key                         [93m[prodkey]
 echo   [97mSystem File Checker                         [93m[sfc]
@@ -35,25 +38,54 @@ echo:
 set /p modify="[0m  $: "
 if /i "%modify%"=="X" exit
 if /i "%modify%"=="help" ( goto help)
-if /i "%modify%"=="sysinfo" (
+if /i "%modify%"=="clrico" (
     echo:
-    echo   [7m Enter System Information [0m
+    taskkill /f /im explorer.exe
     echo:
-    set /p brand="[0m  Manufacturer: "
+    cd /d %userprofile%\AppData\Local
+    del "IconCache.db" /a
+    cd /d %userprofile%\AppData\Local\Microsoft\Windows\Explorer
+    attrib -h "iconcache_*.db"
+    del "iconcache_*.db"
+    cd /d %userprofile%\AppData\Local\Microsoft\Windows\Explorer
+    attrib -h "thumbcache_*.db"
+    del "thumbcache_*.db"
     echo:
-    set /p model="[0m  Model: "
-    echo:
-    set /p url="[0m  Support URL: "
-    echo:
-    reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\OEMInformation" /v Manufacturer /d "%brand%" /f
-    reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\OEMInformation" /v Model /d "%model%" /f
-    reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\OEMInformation" /v SupportURL /d "%url%" /f
+    start explorer.exe
     echo:
     goto prompt
 )
-if /i "%modify%"=="prodkey" (
+if /i "%modify%"=="cmedit" (
     echo:
-    wmic path softwarelicensingservice get OA3xOriginalProductKey
+    echo   [7m Enter A File Extension [0m
+    echo:
+    echo   [43m This Applet is currently disabled and will not do anything [0m
+    echo:
+    set /p ext="[0m  $: ."
+    echo:
+    taskkill /f /im explorer.exe
+    echo:
+    echo reg add "HKEY_CLASSES_ROOT\.%ext%\ShellNew" /v "NullFile" /t REG_SZ /d "1" /f
+    echo:
+    start explorer.exe
+    echo:
+    goto prompt
+)
+if /i "%modify%"=="dism" (
+    echo:
+    dism /Online /Cleanup-Image /RestoreHealth
+    echo:
+    pause
+    echo:
+    goto prompt
+)
+if /i "%modify%"=="killfe" (
+    echo:
+    taskkill /f /im explorer.exe
+    echo:
+    pause
+    echo:
+    start explorer.exe
     echo:
     goto prompt
 )
@@ -65,15 +97,56 @@ if /i "%modify%"=="pgrmdir" (
     echo:
     set /p newpgrmdir="[0m  Path: "
     echo:
-    echo reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion" /f /v "ProgramFilesDir" /t REG_SZ /d "%newpgrmdir%"
-    echo reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion" /f /v "ProgramFilesDir (x86)" /t REG_SZ /d "%newpgrmdir% (x86)"
-    echo reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion" /f /v "ProgramW6432Dir" /t REG_SZ /d "%newpgrmdir%"
-    echo reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion" /f /v "CommonFilesDir" /t REG_SZ /d "%newpgrmdir%\Common Files"
-    echo reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion" /f /v "CommonFilesDir (x86)" /t REG_SZ /d "%newpgrmdir% (x86)\Common Files"
-    echo reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion" /f /v "CommonW6432Dir" /t REG_SZ /d "%newpgrmdir%\Common Files"
+    taskkill /f /im explorer.exe
+    echo:
+    echo reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion" /f /v "ProgramFilesDir" /t REG_SZ /d "%newpgrmdir%"
+    echo reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion" /f /v "ProgramFilesDir (x86)" /t REG_SZ /d "%newpgrmdir% (x86)"
+    echo reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion" /f /v "ProgramW6432Dir" /t REG_SZ /d "%newpgrmdir%"
+    echo reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion" /f /v "CommonFilesDir" /t REG_SZ /d "%newpgrmdir%\Common Files"
+    echo reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion" /f /v "CommonFilesDir (x86)" /t REG_SZ /d "%newpgrmdir% (x86)\Common Files"
+    echo reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion" /f /v "CommonW6432Dir" /t REG_SZ /d "%newpgrmdir%\Common Files"
+    echo:
+    start explorer.exe
+    echo:
+    goto prompt
+)
+if /i "%modify%"=="prodkey" (
+    echo:
+    wmic path Softwarelicensingservice get OA3xOriginalProductKey
+    echo:
+    goto prompt
+)
+if /i "%modify%"=="sfc" (
+    echo:
+    sfc /scannow
+    echo:
+    pause
+    echo:
+    goto prompt
+)
+if /i "%modify%"=="sysinfo" (
+    echo:
+    echo   [7m Enter System Information [0m
+    echo:
+    set /p brand="[0m  Manufacturer: "
+    echo:
+    set /p model="[0m  Model: "
+    echo:
+    set /p url="[0m  Support URL: "
+    echo:
+    taskkill /f /im explorer.exe
+    echo:
+    reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\OEMInformation" /v Manufacturer /d "%brand%" /f
+    reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\OEMInformation" /v Model /d "%model%" /f
+    reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\OEMInformation" /v SupportURL /d "%url%" /f
+    echo:
+    start explorer.exe
+    echo:
     goto prompt
 )
 if /i "%modify%"=="winpatch" (
+    echo:
+    taskkill /f /im explorer.exe
     echo:
     reg add "HKEY_CURRENT_USER\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" /f
     reg add "HKEY_CURRENT_USER\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /f /v "" /t REG_SZ /d ""
@@ -94,38 +167,10 @@ if /i "%modify%"=="winpatch" (
     reg add "HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\DropTarget" /f /v "Clsid" /t REG_SZ /d "{FFE2A43C-56B9-4bf5-9A79-CC6D4285608A}"
     reg add "HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\print" /f
     reg add "HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\print\command" /f /v "" /t REG_SZ /d "%SystemRoot%\System32\rundll32.exe \"%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll\", ImageView_PrintTo %1"
-    mkdir "C:\Windows\allctrl.{ED7BA470-8E54-465E-825C-99712043E01C}"
+    reg add "HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\Move To" /f /ve /d "{C2FBB631-2971-11D1-A18C-00C04FD75D13}"
+    reg add "HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\Copy To" /f /ve /d "{C2FBB630-2971-11D1-A18C-00C04FD75D13}"
     echo:
-    goto prompt
-)
-if /i "%modify%"=="clrico" (
-    echo:
-    taskkill /f /im explorer.exe
-    cd /d %userprofile%\AppData\Local
-    del "IconCache.db" /a
-    cd /d %userprofile%\AppData\Local\Microsoft\Windows\Explorer
-    attrib -h "iconcache_*.db"
-    del "iconcache_*.db"
-    cd /d %userprofile%\AppData\Local\Microsoft\Windows\Explorer
-    attrib -h "thumbcache_*.db"
-    del "thumbcache_*.db"
     start explorer.exe
-    echo:
-    goto prompt
-)
-if /i "%modify%"=="sfc" (
-    echo:
-    sfc /scannow
-    echo:
-    pause
-    echo:
-    goto prompt
-)
-if /i "%modify%"=="dism" (
-    echo:
-    dism /Online /Cleanup-Image /RestoreHealth
-    echo:
-    pause
     echo:
     goto prompt
 ) else (
@@ -134,4 +179,7 @@ if /i "%modify%"=="dism" (
     echo:
     goto cmd
 )
+echo:
+echo [91m    [Error]
+echo:
 goto prompt

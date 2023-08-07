@@ -4,18 +4,13 @@
 #### WinTools is a batch script designed to perform various system maintenance tasks on a Windows computer. The script is intended to be run with administrative privileges to ensure that it can execute the required commands successfully. It provides a simple command-line interface where users can choose from a selection of commands to perform specific tasks.
 </div>
 
-## Requirements:
-
-- This script must be run as an Administrator to execute the commands successfully.
-- Windows operating system.
 
 ## How to Use:
 
-1. Right-click on the script file (WinTools.bat) and choose "Run as Administrator."
-2. The script will check if it has administrative privileges; if not, it will prompt the user to run it as an Administrator.
-3. Once executed with the correct privileges, the script will display a list of available commands.
-4. Enter the desired command's keyword and press Enter to execute the selected task.
-5. Some commands may require additional input from the user (e.g., system information for the "sysinfo" command).
+1. Right-click on the script file and choose "Run as Administrator."
+2. Once executed, the script will display a list of available commands.
+3. Enter the desired command's keyword and press Enter to execute the selected task.
+4. Some commands may require additional input from the user (e.g., system information for the "sysinfo" command).
 
 ## List of Available Commands:
 

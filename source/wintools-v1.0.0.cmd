@@ -1,5 +1,4 @@
 @echo off
-
 net session >nul 2>&1
 if %errorLevel% equ 0 (
     goto top
@@ -10,19 +9,19 @@ if %errorLevel% equ 0 (
     pause
     exit
 )
-
 :top
 echo:
 echo   [104m WinTools [0m
-echo   [90mv0.2.3 [0m
+echo   [90mv1.0.0 [0m
 echo:
 :prompt
 set "modify="
 echo   [97mExit [93m[X] [0m
 echo:
-echo   [7m Applet Commands [0m
+echo   [7m Commands [0m
 :help
 echo:
+echo   [97mEnable Built-in Administrator               [93m[admin -y/-n]
 echo   [97mClear Icon Cache                            [93m[clrico]
 echo   [97mDeployment Image Servicing and Management   [93m[dism]
 echo   [97mSuspend File Explorer                       [93m[killfe]
@@ -35,6 +34,31 @@ echo:
 set /p modify="[0m  $: "
 if /i "%modify%"=="X" exit
 if /i "%modify%"=="help" ( goto help)
+if /i "%modify%"=="admin" (
+    echo:
+    echo [93m    [Invalid Argument/Option] [0m
+    echo:
+    echo        use 'admin -y' to enable 
+    echo        use 'admin -n' to disable
+    echo:
+    goto cmd
+)
+if /i "%modify%"=="admin -y" (
+    echo:
+    echo $: [92mnet user administrator /active:yes[0m
+    echo:
+    net user administrator /active:yes
+    echo:
+    goto prompt
+)
+if /i "%modify%"=="admin -n" (
+    echo:
+    echo $: [92mnet user administrator /active:no[0m
+    echo:
+    net user administrator /active:no
+    echo:
+    goto prompt
+)
 if /i "%modify%"=="clrico" (
     echo:
     taskkill /f /im explorer.exe
@@ -54,6 +78,8 @@ if /i "%modify%"=="clrico" (
 )
 if /i "%modify%"=="dism" (
     echo:
+    echo $: [92mdism /Online /Cleanup-Image /RestoreHealth[0m
+    echo:
     dism /Online /Cleanup-Image /RestoreHealth
     echo:
     pause
@@ -72,11 +98,15 @@ if /i "%modify%"=="killfe" (
 )
 if /i "%modify%"=="prodkey" (
     echo:
+    echo $: [92mSoftwarelicensingservice get OA3xOriginalProductKey[0m
+    echo:
     wmic path Softwarelicensingservice get OA3xOriginalProductKey
     echo:
     goto prompt
 )
 if /i "%modify%"=="sfc" (
+    echo:
+    echo $: [92msfc /scannow[0m
     echo:
     sfc /scannow
     echo:
@@ -112,8 +142,6 @@ if /i "%modify%"=="winpatch" (
     reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\PCHealthCheck" /v "installed" /t REG_DWORD /d 1 /f
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "LaunchTo" /t REG_DWORD /d 1 /f
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "EnableBlurBehind" /t REG_DWORD /d 1 /f
-    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "AppsUseLightTheme" /t REG_DWORD /d 0 /f
-    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "SystemUsesLightTheme" /t REG_DWORD /d 0 /f
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "EnableTransparency" /t REG_DWORD /d 1 /f
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "HideSCAMeetNow" /t REG_DWORD /d 1 /f
     reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "HideSCAMeetNow" /t REG_DWORD /d 1 /f

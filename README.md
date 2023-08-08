@@ -10,49 +10,48 @@
 1. Right-click on the script file and choose "Run as Administrator."
 2. Once executed, the script will display a list of available commands.
 3. Enter the desired command's keyword and press Enter to execute the selected task.
-4. Some commands may require additional input from the user (e.g., system information for the "sysinfo" command).
 
 ## List of Available Commands:
 
 1. **Enable Built-in Administrator:**
 
    - Command: `admin -y` (Enable) or `admin -n` (Disable)
-   - Description: This command enables or disables the built-in Administrator account.
+   - Description: Enables or disables the built-in Administrator account.
 
 2. **Clear Icon Cache:**
 
    - Command: `clrico`
-   - Description: This command clears the icon cache to resolve issues with icon display.
+   - Description: Clears the icon cache to resolve issues with icon display.
 
 3. **Deployment Image Servicing and Management:**
 
    - Command: `dism`
-   - Description: This command performs a system health check and repairs corrupted files.
+   - Description: Performs a system health check and repairs corrupted files.
 
 4. **Suspend File Explorer:**
 
    - Command: `killfe`
-   - Description: This command terminates the File Explorer process and restarts it.
+   - Description: Terminates the File Explorer process and restarts it upon user input.
 
 5. **Get OEM Product Key:**
 
    - Command: `prodkey`
-   - Description: This command retrieves the OEM product key of the Windows installation.
+   - Description: Retrieves the OEM product key of the Windows installation.
 
 6. **System File Checker:**
 
    - Command: `sfc`
-   - Description: This command scans and repairs protected system files.
+   - Description: Scans and repairs protected system files.
 
 7. **Set System Information:**
 
    - Command: `sysinfo`
-   - Description: This command allows the user to set system information, such as manufacturer, model, and support URL.
+   - Description: Allows the user to set system information, such as manufacturer, model, and support URL.
 
 8. **Patch Windows 11:**
 
    - Command: `winpatch`
-   - Description: This command applies various modifications to customize the Windows 11 experience.
+   - Description: Applies various modifications to customize the Windows 11 experience.
 
 ## Important Notes:
 

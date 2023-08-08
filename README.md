@@ -1,7 +1,7 @@
 <div align="center">
     
 # `WinTools`
-<a href="https://github.com/sythatic/WinTools/releases/latest"><img width="415" src="https://github.com/sythatic/WinTools/assets/77679172/f39f8f88-25d2-4af9-8e65-98c979797546"></a>
+<a href="https://github.com/sythatic/WinTools/releases/latest"><img height="415" src="https://github.com/sythatic/WinTools/assets/77679172/f39f8f88-25d2-4af9-8e65-98c979797546"></a>
 #### WinTools is a batch script designed to perform various system maintenance tasks on a Windows computer. The script is intended to be run with administrative privileges to ensure that it can execute the required commands successfully. It provides a simple command-line interface where users can choose from a selection of commands to perform specific tasks.
 </div>
 

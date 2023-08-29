@@ -1,19 +1,19 @@
 [Setup]
 Uninstallable=yes
 AppName=WinTools
-AppVersion=1.0.1
+AppVersion=1.0.0
 AppPublisher=Sythatic
 CreateAppDir=yes
 OutputDir=.\
 OutputBaseFilename=wintools-installer
 Compression=none
-SolidCompression=no
+SolidCompression=yes
 DefaultDirName={win}\wintools\
-SetupIconFile=.\app.ico
+SetupIconFile=.\icon.ico
 DiskSpanning=no
 UninstallDisplayName=WinTools
 UninstallDisplayIcon={app}\unins000.exe
 
 [Files] 
-Source: ".\features\start\*"; DestDir: "{commonprograms}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: ".\features\system-tools\*"; DestDir: "{win}"; Flags: ignoreversion recursesubdirs createallsubdirs 
+Source: ".\files\start\*"; DestDir: "{commonprograms}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\files\wintools\*"; DestDir: "{win}"; Flags: ignoreversion recursesubdirs createallsubdirs 

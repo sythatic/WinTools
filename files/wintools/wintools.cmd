@@ -33,7 +33,7 @@ echo:
 :cmd
 set "modify="
 set /p modify="[0m  $: "
-if /i "%modify%"=="X" exit
+if /i "%modify%"=="exit" exit
 if /i "%modify%"=="help" (
     echo: 
     goto prompt

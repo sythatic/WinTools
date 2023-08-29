@@ -1,7 +1,7 @@
 [Setup]
 Uninstallable=yes
 AppName=WinTools
-AppVersion=1.0.0
+AppVersion=1.0.1
 AppPublisher=Sythatic
 CreateAppDir=yes
 OutputDir=.\

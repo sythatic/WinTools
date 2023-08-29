@@ -10,30 +10,34 @@ if %errorLevel% equ 0 (
     exit
 )
 :top
+cd %SystemRoot%\System32
 echo:
 echo   [104m WinTools [0m
-echo   [90mv1.0.0 [0m
+echo   [90mv1.0.1 [0m
 echo:
 :prompt
-set "modify="
-echo   [97mExit [93m[X] [0m
+echo   [7m Available Commands [0m
 echo:
-echo   [7m Commands [0m
-:help
+echo   [97mExit WinTools                               [93m[exit] [0m
 echo:
-echo   [97mEnable Built-in Administrator               [93m[admin -y/-n]
-echo   [97mClear Icon Cache                            [93m[clrico]
-echo   [97mDeployment Image Servicing and Management   [93m[dism]
-echo   [97mSuspend File Explorer                       [93m[killfe]
-echo   [97mGet OEM Product Key                         [93m[prodkey]
-echo   [97mSystem File Checker                         [93m[sfc]
-echo   [97mSet System Information                      [93m[sysinfo]
-echo   [97mPatch Windows 11                            [93m[winpatch]
+echo   [97mEnable Built-in Administrator               [92m[admin -y/-n]
+echo   [97mWindows Advanced Startup                    [92m[bootops]
+echo   [97mClear Icon Cache                            [92m[clrico]
+echo   [97mDeployment Image Servicing and Management   [92m[dism]
+echo   [97mSuspend File Explorer                       [92m[killfe]
+echo   [97mGet OEM Product Key                         [92m[prodkey]
+echo   [97mSystem File Checker                         [92m[sfc]
+echo   [97mSet System Information                      [92m[sysinfo]
+echo   [97mPatch Windows 11                            [92m[winpatch]
 echo:
 :cmd
+set "modify="
 set /p modify="[0m  $: "
 if /i "%modify%"=="X" exit
-if /i "%modify%"=="help" ( goto help)
+if /i "%modify%"=="help" (
+    echo: 
+    goto prompt
+)
 if /i "%modify%"=="admin" (
     echo:
     echo [93m    [Invalid Argument/Option] [0m
@@ -56,6 +60,14 @@ if /i "%modify%"=="admin -n" (
     echo $: [92mnet user administrator /active:no[0m
     echo:
     net user administrator /active:no
+    echo:
+    goto prompt
+)
+if /i "%modify%"=="bootops" (
+    echo:
+    echo $: [92mshutdown /r /o /f /t 00[0m
+    echo:
+    shutdown /r /o /f /t 00
     echo:
     goto prompt
 )
@@ -202,7 +214,7 @@ if /i "%modify%"=="winpatch" (
     goto prompt
 ) else (
     echo:
-    echo [91m    [Command Not Found]
+    echo [93m    [Command Not Found]
     echo:
     goto cmd
 )

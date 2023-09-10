@@ -103,6 +103,7 @@ if /i "%modify%"=="clrico" (
     del "thumbcache_*.db"
     echo:
     start explorer.exe
+    cd %SystemRoot%
     echo:
     goto prompt
 )

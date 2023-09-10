@@ -91,7 +91,7 @@ if (-not (Test-Path "$wget" -ErrorAction SilentlyContinue)) {
 & $wget $wgetParams --execute robots=off --reject index.htm* $Url
 
 if ($cleanupWget) { $wget | Remove-Item }
-
+Write-Host ""
 Write-Host "Download Complete!"
 Write-Host "Press any key to exit..."
 $null = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")

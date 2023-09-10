@@ -13,42 +13,57 @@
 
 ## List of Available Commands:
 
-1. **Enable Built-in Administrator:**
+**Enable Built-in Administrator:**
 
    - Command: `admin -y` (Enable) or `admin -n` (Disable)
    - Description: Enables or disables the built-in Administrator account.
 
-2. **Clear Icon Cache:**
+**Appx Package Uninstaller:**
+
+   - Command: `appxmgr`
+   - Description: Uninstall Appx and provisioned packages.
+
+**Windows Advanced Startup:**
+
+   - Command: `bootops`
+   - Description: Initiate an advanced startup.
+
+**Clear Icon Cache:**
 
    - Command: `clrico`
    - Description: Clears the icon cache to resolve issues with icon display.
 
-3. **Deployment Image Servicing and Management:**
+**Deployment Image Servicing and Management:**
 
    - Command: `dism`
    - Description: Performs a system health check and repairs corrupted files.
 
-4. **Suspend File Explorer:**
+**HTTP Index Downloader:**
+
+   - Command: `indexdl`
+   - Description: Recursively download files from a webserver's "Index of" page.
+
+**Suspend File Explorer:**
 
    - Command: `killfe`
    - Description: Terminates the File Explorer process and restarts it upon user input.
 
-5. **Get OEM Product Key:**
+**Get OEM Product Key:**
 
    - Command: `prodkey`
    - Description: Retrieves the OEM product key of the Windows installation.
 
-6. **System File Checker:**
+**System File Checker:**
 
    - Command: `sfc`
    - Description: Scans and repairs protected system files.
 
-7. **Set System Information:**
+**Set System Information:**
 
    - Command: `sysinfo`
    - Description: Allows the user to set system information, such as manufacturer, model, and support URL.
 
-8. **Patch Windows 11:**
+**Patch Windows 11:**
 
    - Command: `winpatch`
    - Description: Applies various modifications to customize the Windows 11 experience.

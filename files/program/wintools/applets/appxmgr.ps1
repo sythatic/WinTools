@@ -1,23 +1,26 @@
 # Script by ThioJoe - https://github.com/ThioJoe
+# Updated & Adapted by Sythatic - https://github.com/sythatic
 
 # Display AppX packages that are installed
-Get-AppxPackage | Select-Object Name, PackageFullName | Out-Host
-
-# Pause the script and display instructions
-Write-Host "Please create a text file called list.txt, then copy the names of the packages you want to uninstall into it, one per line."
-Write-Host "NOTE: Some of the packages listed above are important. Do not uninstall any packages if you're unsure about their function!"
+Get-AppxPackage | Select-Object Name | Out-Host
+Write-Host "Input the package names you want to remove, one per line."
 Write-Host ""
-Write-Host "Then press any key to continue ..."
-Read-Host
+Write-Host "Press [enter] to add each package to the list."
+Write-Host "Press [enter] on an empty line to continue."
+Write-Host ""
 
-# Check if list.txt exists
-if (-not (Test-Path -Path 'list.txt')) {
-    Write-Host "Error: list.txt not found. Please create it in the same directory as this script, and add the packages you want to uninstall."
-    return
-}
+# Define the file path and content
+$appList = ".\applist.log"
+
+# Create the text file with the specified content
+Set-Content -Path $appList
+
+Write-Host ""
+Write-Host "Then press any key to begin..."
+$null = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 
 # Read from the file
-$lines = Get-Content -Path 'list.txt'
+$lines = Get-Content -Path 'applist.log'
 
 # Create an array to hold unsuccessful attempts
 $notFound = @()
@@ -51,7 +54,7 @@ foreach ($line in $lines) {
 
 # If there were unsuccessful attempts, print a warning
 if ($notFound) {
-    Write-Host "[!!!] WARNING: The following packages were not found and could not be uninstalled:"
+    Write-Host "[WARNING] - The following packages were not found and could not be uninstalled:"
     Write-Host ""
 
     # Print each package name that was not found
@@ -59,7 +62,12 @@ if ($notFound) {
         Write-Host "`t$package"
     }
     Write-Host ""
-    Write-Host "Please re-check the names to ensure they exactly match a package's 'Name' or 'PackageFullName'."
-    Write-Host "(Also check if the Full Name was truncated with '...', and if so try the shorter 'Name' string.)"
-    Write-Host ""
+    Write-Host "Please check the package names and ensure they match exactly."
 }
+
+Write-Host ""
+Write-Host "Process completed."
+Write-Host ""
+Write-Host "Then press any key to exit..."
+$null = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+Remove-Item -Path $appList -Force

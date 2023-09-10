@@ -1,3 +1,6 @@
+# Script by lazaroblanc - https://github.com/lazaroblanc
+# Adapted & Updated by Sythatic - https://github.com/sythatic
+
 [CmdletBinding()]
 param (
     $Url,

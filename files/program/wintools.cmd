@@ -21,7 +21,7 @@ echo:
 echo   [97mExit WinTools                               [91m[exit] [0m
 echo:
 echo   [97mEnable Built-in Administrator               [93m[admin -y/-n]
-echo   [97mWUP/APPX Application Manager                [93m[appxmgr]
+echo   [97mAppx Package Uninstaller                    [93m[appxmgr]
 echo   [97mWindows Advanced Startup                    [93m[bootops]
 echo   [97mClear Icon Cache                            [93m[clrico]
 echo   [97mDeployment Image Servicing and Management   [93m[dism]

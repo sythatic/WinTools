@@ -73,16 +73,17 @@ else {
 }
 "Path: $(Get-Location)" | Write-Verbose
 
-if (Test-Path ".\wget.exe") {
-    Remove-Item ".\wget.exe"
+$wget = ".\wget.exe"
+
+if (Test-Path "$wget") {
+    Remove-Item "$wget"
 }
 
-$wget = ".\wget.exe"
 if (-not (Test-Path "$wget" -ErrorAction SilentlyContinue)) {
     if ([Environment]::Is64BitOperatingSystem) { $architecture = "64" }
     else { $architecture = "32" }
     "Downloading wget" | Write-Verbose
-    Invoke-WebRequest -Uri "https://eternallybored.org/misc/wget/1.21.4/$architecture/wget.exe" -OutFile ".\$wget"
+    Invoke-WebRequest -Uri "https://eternallybored.org/misc/wget/1.21.4/$architecture/wget.exe" -OutFile "$wget"
     $cleanupWget = $true
 }
 

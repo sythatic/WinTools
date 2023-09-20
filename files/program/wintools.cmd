@@ -1,3 +1,4 @@
+:debug
 @echo off & title WinTools
 net session >nul 2>&1
 if %errorLevel% equ 0 (
@@ -13,46 +14,34 @@ if %errorLevel% equ 0 (
 cd %SystemRoot%
 echo:
 echo   [104m WinTools [0m
-echo   [90mv1.1.0 [0m
+echo   [90mv1.2.0 [0m
 echo:
 :prompt
-echo   [7m Available Commands [0m
+echo   [7m Commands [0m
 echo:
-echo   [97mExit WinTools                               [91m[exit] [0m
-echo:
-echo   [97mEnable Built-in Administrator               [93m[admin -y/-n]
+echo   [97mToggle Built-in Administrator               [93m[admin -y/-n]
 echo   [97mAppx Package Uninstaller                    [93m[appxmgr]
-echo   [97mWindows Advanced Startup                    [93m[bootops]
+echo   [97mInitiate Advanced Startup                   [93m[bootops]
 echo   [97mClear Icon Cache                            [93m[clrico]
-echo   [97mDeployment Image Servicing and Management   [93m[dism]
+echo   [97mDISM System Recovery                        [93m[dism]
+echo   [97mAdd an Environmental Variable               [93m[envar]
 echo   [97mHTTP Index Downloader                       [93m[indexdl]
 echo   [97mSuspend File Explorer                       [93m[killfe]
 echo   [97mGet OEM Product Key                         [93m[prodkey]
+echo   [97mSet Powershell Execution Policy             [93m[pspedit]
 echo   [97mSystem File Checker                         [93m[sfc]
+echo   [97mReboot to UEFI/BIOS                         [93m[sysfw]
 echo   [97mSet System Information                      [93m[sysinfo]
 echo   [97mPatch Windows 11                            [93m[winpatch]
+echo:
+echo   [97mExit WinTools                               [91m[exit] [0m
 echo:
 :cmd
 set "modify="
 set /p modify="[0m  $: "
+if /i "%modify%"=="debug" goto debug
 if /i "%modify%"=="exit" exit
 if /i "%modify%"=="help" (
-    echo: 
-    goto prompt
-)
-if /i "%modify%"=="indexdl" (
-    echo:
-    cd %SystemRoot%\wintools\applets
-    powershell .\indexdl.ps1
-    cd %SystemRoot%
-    echo: 
-    goto prompt
-)
-if /i "%modify%"=="appxmgr" (
-    echo:
-    cd %SystemRoot%\wintools\applets
-    powershell .\appxmgr.ps1
-    cd %SystemRoot%
     echo: 
     goto prompt
 )
@@ -60,10 +49,18 @@ if /i "%modify%"=="admin" (
     echo:
     echo [93m    [Invalid Argument/Option] [0m
     echo:
-    echo        use 'admin -y' to enable 
-    echo        use 'admin -n' to disable
+    echo        use [93m[admin -y][0m to enable 
+    echo        use [93m[admin -n][0m to disable
     echo:
     goto cmd
+)
+if /i "%modify%"=="appxmgr" (
+    echo:
+    cd %SystemRoot%\wintools\applets
+    powershell ".\appxmgr.ps1"
+    cd %SystemRoot%
+    echo: 
+    goto prompt
 )
 if /i "%modify%"=="admin -y" (
     echo:
@@ -83,9 +80,9 @@ if /i "%modify%"=="admin -n" (
 )
 if /i "%modify%"=="bootops" (
     echo:
-    echo $: [92mshutdown /r /o /f /t 00[0m
+    echo $: [92mshutdown /r /o /t 00[0m
     echo:
-    shutdown /r /o /f /t 00
+    shutdown /r /o /t 00
     echo:
     goto prompt
 )
@@ -117,6 +114,30 @@ if /i "%modify%"=="dism" (
     echo:
     goto prompt
 )
+if /i "%modify%"=="envar" (
+    echo:
+    echo   [7m Add an Environmental Variable [0m
+    echo:
+    set /p evar="[0m  Variable: "
+    echo:
+    set /p eval="[0m  Value: "
+    echo:
+    taskkill /f /im explorer.exe
+    echo:
+    setx %evar% %eval% /M
+    echo:
+    start explorer.exe
+    echo:
+    goto prompt
+)
+if /i "%modify%"=="indexdl" (
+    echo:
+    cd %SystemRoot%\wintools\applets
+    powershell ".\indexdl.ps1"
+    cd %SystemRoot%
+    echo: 
+    goto prompt
+)
 if /i "%modify%"=="killfe" (
     echo:
     taskkill /f /im explorer.exe
@@ -135,6 +156,46 @@ if /i "%modify%"=="prodkey" (
     echo:
     goto prompt
 )
+if /i "%modify%"=="pspedit" (
+    echo: 
+    echo [90m   [Undefined][0m
+    echo     - There is no execution policy set in the current scope.
+    echo     - If the execution policy in all scopes is Undefined, the policy is set to default.
+    echo:
+    echo [94m   [Restricted][0m
+    echo     - Permits individual commands.
+    echo     - Prevents running of all script files.
+    echo:
+    echo [96m   [Default][0m
+    echo     - Restricted for Windows clients.
+    echo     - RemoteSigned for Windows servers.
+    echo:
+    echo [92m   [AllSigned][0m
+    echo     - Requires all scripts files be signed, including scripts written on the local computer.
+    echo     - Prompts you before running scripts from publishers that you haven't yet classified as trusted or untrusted.
+    echo:
+    echo [93m   [RemoteSigned][0m
+    echo     - Requires a signature on scripts downloaded from the internet.
+    echo     - Doesn't require a signature on scripts written on the local computer.
+    echo     - Runs unblocked, unsigned scripts downloaded from the internet.
+    echo:
+    echo [91m   [Unrestricted][0m
+    echo     - Unsigned scripts can run.
+    echo     - Warns the user before running non-local scripts.
+    echo:
+    echo [95m   [Bypass][0m
+    echo     - Nothing is blocked and there are no warnings or prompts.
+    echo     - There is a risk of running malicious scripts. 
+    echo: 
+    echo Current Policy:
+    powershell "Get-ExecutionPolicy"
+    powershell "Set-ExecutionPolicy"
+    echo:  
+    echo New Policy:
+    powershell "Get-ExecutionPolicy"
+    echo: 
+    goto prompt
+)
 if /i "%modify%"=="sfc" (
     echo:
     echo $: [92msfc /scannow[0m
@@ -142,6 +203,14 @@ if /i "%modify%"=="sfc" (
     sfc /scannow
     echo:
     pause
+    echo:
+    goto prompt
+)
+if /i "%modify%"=="sysfw" (
+    echo:
+    echo $: [92mshutdown /r /fw /t 00[0m
+    echo:
+    shutdown /r /fw /t 00
     echo:
     goto prompt
 )
@@ -229,11 +298,14 @@ if /i "%modify%"=="winpatch" (
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "HideDrivesWithNoMedia" /t REG_DWORD /d 0 /f
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "TaskbarSmallIcons" /t REG_DWORD /d 1 /f
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "DisablePreviewDesktop" /t REG_DWORD /d 0 /f
-    reg add "HKEY_LOCAL_MACHINE\SYSTEM\Setup\LabConfig" /v "BypassTPMCheck" /t REG_DWORD /d 1 /f
-    reg add "HKEY_LOCAL_MACHINE\SYSTEM\Setup\LabConfig" /v "BypassRAMCheck" /t REG_DWORD /d 1 /f
-    reg add "HKEY_LOCAL_MACHINE\SYSTEM\Setup\LabConfig" /v "BypassSecureBootCheck" /t REG_DWORD /d 1 /f
-    reg add "HKEY_LOCAL_MACHINE\SYSTEM\Setup\MoSetup" /v "AllowUpgradesWithUnsupportedTPMOrCPU" /t REG_DWORD /d 1 /f
-    reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v "DisableWUfBSafeguards" /t REG_DWORD /d 1 /f
+    reg add "HKEY_LOCAL_MACHINE\System\Setup\LabConfig" /v "BypassTPMCheck" /t REG_DWORD /d 1 /f
+    reg add "HKEY_LOCAL_MACHINE\System\Setup\LabConfig" /v "BypassRAMCheck" /t REG_DWORD /d 1 /f
+    reg add "HKEY_LOCAL_MACHINE\System\Setup\LabConfig" /v "BypassSecureBootCheck" /t REG_DWORD /d 1 /f
+    reg add "HKEY_LOCAL_MACHINE\System\Setup\MoSetup" /v "AllowUpgradesWithUnsupportedTPMOrCPU" /t REG_DWORD /d 1 /f
+    reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate" /v "DisableWUfBSafeguards" /t REG_DWORD /d 1 /f
+    reg add "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\DoSvc" /v "Start" /t REG_DWORD /d 4 /f
+    setx themes "shell:::{ED834ED6-4B5A-4bfe-8F11-A626DCB6A921}" /M 
+    setx alltasks "shell:::{ED7BA470-8E54-465E-825C-99712043E01C}" /M 
     echo:
     start explorer.exe
     echo:

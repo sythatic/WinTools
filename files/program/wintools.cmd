@@ -14,7 +14,7 @@ if %errorLevel% equ 0 (
 cd %SystemRoot%
 echo:
 echo   [104m WinTools [0m
-echo   [90mv1.2.0 [0m
+echo   [90mv1.3.0 [0m
 echo:
 :prompt
 echo   [7m Commands [0m
@@ -29,6 +29,7 @@ echo   [97mHTTP Index Downloader                       [93m[indexdl]
 echo   [97mSuspend File Explorer                       [93m[killfe]
 echo   [97mGet OEM Product Key                         [93m[prodkey]
 echo   [97mSet Powershell Execution Policy             [93m[pspedit]
+echo   [97mSet Remote Desktop Port                     [93m[rdport]
 echo   [97mSystem File Checker                         [93m[sfc]
 echo   [97mReboot to UEFI/BIOS                         [93m[sysfw]
 echo   [97mSet System Information                      [93m[sysinfo]
@@ -193,6 +194,14 @@ if /i "%modify%"=="pspedit" (
     echo:  
     echo New Policy:
     powershell "Get-ExecutionPolicy"
+    echo: 
+    goto prompt
+)
+if /i "%modify%"=="rdport" (
+    echo:
+    cd %SystemRoot%\wintools\applets
+    powershell ".\rdport.ps1"
+    cd %SystemRoot%
     echo: 
     goto prompt
 )

@@ -1,7 +1,7 @@
 [Setup]
 Uninstallable=yes
 AppName=WinTools
-AppVersion=1.3.0
+AppVersion=22H2
 AppPublisher=Sythatic
 CreateAppDir=no
 OutputDir=.\
@@ -16,5 +16,5 @@ UninstallFilesDir={win}\wintools
 UninstallDisplayIcon={win}\wintools\unins000.exe
 
 [Files] 
-Source: ".\files\start\*"; DestDir: "{commonprograms}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\files\start\*"; DestDir: "{commonprograms}\Windows Tools"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: ".\files\program\*"; DestDir: "{win}"; Flags: ignoreversion recursesubdirs createallsubdirs 

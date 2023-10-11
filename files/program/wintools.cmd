@@ -14,7 +14,7 @@ if %errorLevel% equ 0 (
 cd %SystemRoot%
 echo:
 echo   [104m WinTools [0m
-echo   [90m23H2 [0m
+echo   [90m22H2 [0m
 echo:
 :prompt
 echo   [7m Commands [0m

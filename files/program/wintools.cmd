@@ -14,7 +14,7 @@ if %errorLevel% equ 0 (
 cd %SystemRoot%
 echo:
 echo   [104m WinTools [0m
-echo   [90mv1.3.0 [0m
+echo   [90m23H2 [0m
 echo:
 :prompt
 echo   [7m Commands [0m
@@ -25,6 +25,7 @@ echo   [97mInitiate Advanced Startup                   [93m[bootops]
 echo   [97mClear Icon Cache                            [93m[clrico]
 echo   [97mDISM System Recovery                        [93m[dism]
 echo   [97mAdd an Environmental Variable               [93m[envar]
+echo   [97mEnable Windows Photo Viewer                 [93m[getphotoview]
 echo   [97mHTTP Index Downloader                       [93m[indexdl]
 echo   [97mSuspend File Explorer                       [93m[killfe]
 echo   [97mGet OEM Product Key                         [93m[prodkey]
@@ -33,6 +34,7 @@ echo   [97mSet Remote Desktop Port                     [93m[rdport]
 echo   [97mSystem File Checker                         [93m[sfc]
 echo   [97mReboot to UEFI/BIOS                         [93m[sysfw]
 echo   [97mSet System Information                      [93m[sysinfo]
+echo   [97mBypass TPM Appraisers                       [93m[tpmbypass]
 echo   [97mPatch Windows 11                            [93m[winpatch]
 echo:
 echo   [97mExit WinTools                               [91m[exit] [0m
@@ -126,6 +128,22 @@ if /i "%modify%"=="envar" (
     taskkill /f /im explorer.exe
     echo:
     setx %evar% %eval% /M
+    echo:
+    start explorer.exe
+    echo:
+    goto prompt
+)
+if /i "%modify%"=="getphotoview" (
+    echo:
+    taskkill /f /im explorer.exe
+    echo:
+    reg add "HKEY_CLASSES_ROOT\Applications\photoviewer.dll" /f
+    reg add "HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell" /f
+    reg add "HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open" /f /v "MuiVerb" /t REG_SZ /d "@photoviewer.dll,-3043"
+    reg add "HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\command" /f /v "" /t REG_SZ /d "%SystemRoot%\System32\rundll32.exe \"%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll\", ImageView_Fullscreen %1"
+    reg add "HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\DropTarget" /f /v "Clsid" /t REG_SZ /d "{FFE2A43C-56B9-4bf5-9A79-CC6D4285608A}"
+    reg add "HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\print" /f
+    reg add "HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\print\command" /f /v "" /t REG_SZ /d "%SystemRoot%\System32\rundll32.exe \"%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll\", ImageView_PrintTo %1"
     echo:
     start explorer.exe
     echo:
@@ -243,22 +261,23 @@ if /i "%modify%"=="sysinfo" (
     echo:
     goto prompt
 )
+if /i "%modify%"=="tpmbypass" (
+    echo:
+    taskkill /f /im explorer.exe
+    echo:
+    reg add "HKEY_LOCAL_MACHINE\System\Setup\LabConfig" /v "BypassTPMCheck" /t REG_DWORD /d 1 /f
+    reg add "HKEY_LOCAL_MACHINE\System\Setup\LabConfig" /v "BypassRAMCheck" /t REG_DWORD /d 1 /f
+    reg add "HKEY_LOCAL_MACHINE\System\Setup\LabConfig" /v "BypassSecureBootCheck" /t REG_DWORD /d 1 /f
+    reg add "HKEY_LOCAL_MACHINE\System\Setup\MoSetup" /v "AllowUpgradesWithUnsupportedTPMOrCPU" /t REG_DWORD /d 1 /f
+    echo:
+    start explorer.exe
+    echo:
+    goto prompt
+)
 if /i "%modify%"=="winpatch" (
     echo:
     taskkill /f /im explorer.exe
     echo:
-    reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\PCHC" /v "PreviousUninstall" /t REG_DWORD /d 1 /f
-    reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\PCHealthCheck" /v "installed" /t REG_DWORD /d 1 /f
-    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "LaunchTo" /t REG_DWORD /d 1 /f
-    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "EnableBlurBehind" /t REG_DWORD /d 1 /f
-    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "EnableTransparency" /t REG_DWORD /d 1 /f
-    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "HideSCAMeetNow" /t REG_DWORD /d 1 /f
-    reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "HideSCAMeetNow" /t REG_DWORD /d 1 /f
-    reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Explorer" /v "HidePeopleBar" /t REG_DWORD /d 1 /f
-    reg add "HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer" /v "HidePeopleBar" /t REG_DWORD /d 1 /f
-    reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" /v "PeopleBand" /t REG_DWORD /d 0 /f
-    reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Windows Feeds" /v "EnableFeeds" /t REG_DWORD /d 0 /f
-    reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Feeds" /v "ShellFeedsTaskbarViewMode" /t REG_DWORD /d 2 /f
     reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Windows Search" /v "AllowCloudSearch" /t REG_DWORD /d 0 /f
     reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Windows Search" /v "AllowCortana" /t REG_DWORD /d 0 /f
     reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Windows Search" /v "AllowCortanaAboveLock" /t REG_DWORD /d 0 /f
@@ -275,46 +294,45 @@ if /i "%modify%"=="winpatch" (
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\SearchSettings" /f /v "IsDynamicSearchBoxEnabled" /t REG_DWORD /d 0
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Search" /f /v "BingSearchEnabled" /t REG_DWORD /d 0
     reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "AllowOnlineTips" /t REG_DWORD /d 0 /f
+
     reg add "HKEY_CURRENT_USER\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /f /v "" /t REG_SZ /d ""
     reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Personalization" /f /v "NoLockScreen" /t REG_DWORD /d 1
-    reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" /f /v "verbosestatus" /t REG_DWORD /d 1
-    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize" /f /v "StartupDelayInMSec" /t REG_DWORD /d 0
+    reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" /f /v "verbosestatus" /t REG_DWORD /d 1    
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /f /v "ShowSecondsInSystemClock" /t REG_DWORD /d 1
-    reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /f /v "JPEGImportQuality" /t REG_DWORD /d 100
-    reg add "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Memory Management" /f /v "LargeSystemCache" /t REG_DWORD /d 1
-    reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\DataCollection" /f /v "AllowTelemetry" /t REG_DWORD /d 0
-    reg add "HKEY_CLASSES_ROOT\Applications\photoviewer.dll" /f
-    reg add "HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell" /f
-    reg add "HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open" /f /v "MuiVerb" /t REG_SZ /d "@photoviewer.dll,-3043"
-    reg add "HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\command" /f /v "" /t REG_SZ /d "%SystemRoot%\System32\rundll32.exe \"%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll\", ImageView_Fullscreen %1"
-    reg add "HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\open\DropTarget" /f /v "Clsid" /t REG_SZ /d "{FFE2A43C-56B9-4bf5-9A79-CC6D4285608A}"
-    reg add "HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\print" /f
-    reg add "HKEY_CLASSES_ROOT\Applications\photoviewer.dll\shell\print\command" /f /v "" /t REG_SZ /d "%SystemRoot%\System32\rundll32.exe \"%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll\", ImageView_PrintTo %1"
-    reg add "HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\Move To" /f /ve /d "{C2FBB631-2971-11D1-A18C-00C04FD75D13}"
-    reg add "HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\Copy To" /f /ve /d "{C2FBB630-2971-11D1-A18C-00C04FD75D13}"
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "ServerAdminUI" /t REG_DWORD /d 1 /f
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "HideFileExt" /t REG_DWORD /d 0 /f
-    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "DontPrettyPath" /t REG_DWORD /d 0 /f
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "MapNetDrvBtn" /t REG_DWORD /d 1 /f
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "SeparateProcess" /t REG_DWORD /d 1 /f
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "AutoCheckSelect" /t REG_DWORD /d 1 /f
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "ShowStatusBar" /t REG_DWORD /d 1 /f
-    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "ShowTaskViewButton" /t REG_DWORD /d 1 /f
-    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "UseCompactMode" /t REG_DWORD /d 1 /f
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "HideMergeConflicts" /t REG_DWORD /d 0 /f
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "ShowEncryptCompressedColor" /t REG_DWORD /d 1 /f
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "NavPaneShowAllCloudStates" /t REG_DWORD /d 1 /f
-    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "HideDrivesWithNoMedia" /t REG_DWORD /d 0 /f
-    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "TaskbarSmallIcons" /t REG_DWORD /d 1 /f
     reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "DisablePreviewDesktop" /t REG_DWORD /d 0 /f
-    reg add "HKEY_LOCAL_MACHINE\System\Setup\LabConfig" /v "BypassTPMCheck" /t REG_DWORD /d 1 /f
-    reg add "HKEY_LOCAL_MACHINE\System\Setup\LabConfig" /v "BypassRAMCheck" /t REG_DWORD /d 1 /f
-    reg add "HKEY_LOCAL_MACHINE\System\Setup\LabConfig" /v "BypassSecureBootCheck" /t REG_DWORD /d 1 /f
-    reg add "HKEY_LOCAL_MACHINE\System\Setup\MoSetup" /v "AllowUpgradesWithUnsupportedTPMOrCPU" /t REG_DWORD /d 1 /f
-    reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate" /v "DisableWUfBSafeguards" /t REG_DWORD /d 1 /f
-    reg add "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\DoSvc" /v "Start" /t REG_DWORD /d 4 /f
-    setx themes "shell:::{ED834ED6-4B5A-4bfe-8F11-A626DCB6A921}" /M 
-    setx alltasks "shell:::{ED7BA470-8E54-465E-825C-99712043E01C}" /M 
+    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "LaunchTo" /t REG_DWORD /d 1 /f
+    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "HideSCAMeetNow" /t REG_DWORD /d 1 /f
+    reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "HideSCAMeetNow" /t REG_DWORD /d 1 /f
+    reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Explorer" /v "HidePeopleBar" /t REG_DWORD /d 1 /f
+    reg add "HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer" /v "HidePeopleBar" /t REG_DWORD /d 1 /f
+    reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" /v "PeopleBand" /t REG_DWORD /d 0 /f
+    reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Windows Feeds" /v "EnableFeeds" /t REG_DWORD /d 0 /f
+    reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Feeds" /v "ShellFeedsTaskbarViewMode" /t REG_DWORD /d 2 /f
+    reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /f /v "JPEGImportQuality" /t REG_DWORD /d 100
+    reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\DataCollection" /f /v "AllowTelemetry" /t REG_DWORD /d 0
+
+    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize" /f /v "StartupDelayInMSec" /t REG_DWORD /d 0
+    reg add "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Memory Management" /f /v "LargeSystemCache" /t REG_DWORD /d 1
+
+    reg add "HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\Move To" /f /ve /d "{C2FBB631-2971-11D1-A18C-00C04FD75D13}"
+    reg add "HKEY_CLASSES_ROOT\AllFilesystemObjects\shellex\ContextMenuHandlers\Copy To" /f /ve /d "{C2FBB630-2971-11D1-A18C-00C04FD75D13}"
+        
+    ::reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate" /v "DisableWUfBSafeguards" /t REG_DWORD /d 1 /f
+    ::reg add "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\DoSvc" /v "Start" /t REG_DWORD /d 4 /f
+    ::reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\PCHC" /v "PreviousUninstall" /t REG_DWORD /d 1 /f
+    ::reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\PCHealthCheck" /v "installed" /t REG_DWORD /d 1 /f
+
+    setx Themes "shell:::{ED834ED6-4B5A-4bfe-8F11-A626DCB6A921}" /M 
+    setx AllTasks "shell:::{ED7BA470-8E54-465E-825C-99712043E01C}" /M 
     echo:
     start explorer.exe
     echo:

@@ -11,12 +11,12 @@ if %errorLevel% equ 0 (
     exit
 )
 :top
-cd %SystemRoot%
 echo:
 echo   [104m WinTools [0m
 echo   [90m22H2 [0m
 echo:
 :prompt
+cd %SystemRoot%
 echo   [7m Commands [0m
 echo:
 echo   [97mToggle Built-in Administrator               [93m[admin -y/-n]
@@ -59,8 +59,7 @@ if /i "%modify%"=="admin" (
 )
 if /i "%modify%"=="appxmgr" (
     echo:
-    cd wintools\applets
-    powershell "appxmgr.ps1"
+    powershell "%SystemRoot%\wintools\applets\appxmgr.ps1"
     cd %SystemRoot%
     echo: 
     goto prompt
@@ -99,9 +98,9 @@ if /i "%modify%"=="clrico" (
     cd /d %LOCALAPPDATA%\Microsoft\Windows\Explorer
     attrib -h "thumbcache_*.db"
     del "thumbcache_*.db"
+    cd %SystemRoot%
     echo:
     start explorer.exe
-    cd %SystemRoot%
     echo:
     goto prompt
 )
@@ -133,8 +132,7 @@ if /i "%modify%"=="envar" (
 )
 if /i "%modify%"=="indexdl" (
     echo:
-    cd wintools\applets
-    powershell "indexdl.ps1"
+    powershell "%SystemRoot%\wintools\applets\indexdl.ps1"
     cd %SystemRoot%
     echo: 
     goto prompt
@@ -199,8 +197,7 @@ if /i "%modify%"=="pspedit" (
 )
 if /i "%modify%"=="rdport" (
     echo:
-    cd wintools\applets
-    powershell "rdport.ps1"
+    powershell "%SystemRoot%\wintools\applets\rdport.ps1"
     cd %SystemRoot%
     echo: 
     goto prompt

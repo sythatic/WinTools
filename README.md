@@ -38,6 +38,11 @@
    - Command: `dism`
    - Description: Performs a system health check and repairs corrupted files.
 
+**Add an Environment Variable:**
+
+   - Command: `envar`
+   - Description: Allows the user to add environment variables to the system. 
+
 **HTTP Index Downloader:**
 
    - Command: `indexdl`
@@ -53,20 +58,40 @@
    - Command: `prodkey`
    - Description: Retrieves the OEM product key of the Windows installation.
 
+**Set Powershell Execution Policy:**
+
+   - Command: `pspedit`
+
+**Set Remote Desktop Port:**
+
+   - Command: `rdport`
+   - Description: Allows the user to change the default RDP port.
+
 **System File Checker:**
 
    - Command: `sfc`
    - Description: Scans and repairs protected system files.
+
+**Reboot to UEFI/BIOS:**
+
+   - Command: `sysfw`
+   - Description: Reboots the system to the UEFI/BIOS.
 
 **Set System Information:**
 
    - Command: `sysinfo`
    - Description: Allows the user to set system information, such as manufacturer, model, and support URL.
 
+**Bypass TPM Appraisers:**
+
+   - Command: `tpmbypass`
+   - Description: Allows the installation of Windows 11 on unsupported PCs.
+
 **Patch Windows 11:**
 
    - Command: `winpatch`
-   - Description: Applies various modifications to customize the Windows 11 experience.
+   - Command: `winpatch -r`
+   - Description: Applies or removes various modifications that modify the Windows 11 experience to better mimic the functions of Windows 10 and earlier.
 
 ## Important Notes:
 

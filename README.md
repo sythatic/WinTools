@@ -7,7 +7,7 @@
 
 ## How to Use:
 
-1. Right-click on the script file and choose "Run as Administrator."
+1. You can access WinTools from the Start Menu or by searching for it.
 2. Once executed, the script will display a list of available commands.
 3. Enter the desired command's keyword and press Enter to execute the selected task.
 

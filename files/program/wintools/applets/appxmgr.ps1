@@ -1,11 +1,5 @@
 # Script by Sythatic - https://github.com/sythatic
 
-Write-Host "[BEFORE YOU BEGIN]"
-Write-Host ""
-Write-Host "- To select multiple packages, hold the [ctrl] key while selecting."
-Write-Host "- You may need to select 'Provisioned Packages' to uninstall some packages."
-Write-Host ""
-Write-Host "Press any key to begin..."
 $null = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 $options = "Appx Packages", "Provisioned Packages"
 $selectedOption = $options | Out-GridView -Title "Select Appx Packages to Uninstall" -PassThru
@@ -19,5 +13,5 @@ if ($selectedOption -eq "Appx Packages") {
     Write-Host "Process completed."
 } else {
     Write-Host ""
-    Write-Host "Operation was cancelled."
+    Write-Host "The operation failed or was cancelled."
 }

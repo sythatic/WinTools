@@ -1,3 +1,28 @@
+if /i "%modify%"=="clripsw" (
+    echo:
+    cd /d "%LOCALAPPDATA%\Packages\AppleInc.iTunes_nzyj5cx40ttqa\LocalCache\Roaming\Apple Computer\iTunes\iPhone Software Updates"
+    del "*.ipsw"
+    cd /d "%LOCALAPPDATA%\Packages\AppleInc.AppleDevices_nzyj5cx40ttqa\LocalCache\Roaming\Apple\AMPDevicesAgent\iPod Software Updates"
+    del "*.ipsw"
+    cd /d "%APPDATA%\Apple Computer\iTunes\"
+    del "*.ipsw"
+    cd /d "%APPDATA%\Apple Computer\iTunes\iPhone Software Updates"
+    del "*.ipsw"
+    echo:
+    goto prompt
+)
+
+
+
+
+
+if /i "%modify%"=="rdport" (
+    echo:
+    powershell "%SystemRoot%\wintools\applets\rdport.ps1"
+    echo: 
+    goto prompt
+)
+
 # Script by Sythatic - https://github.com/sythatic
 
 $getPortNumber = "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp"
